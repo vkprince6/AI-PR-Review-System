@@ -1,0 +1,1 @@
+"""Service layer: business logic orchestration, independent of HTTP and DB concerns."""
