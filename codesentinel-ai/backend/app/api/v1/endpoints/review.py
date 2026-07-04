@@ -8,6 +8,7 @@ and retrieving previously generated review results.
 import json
 
 from fastapi import APIRouter, Depends
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
@@ -40,7 +41,22 @@ async def analyze_pull_request(
     Returns:
         APIResponse[ReviewResponseSchema]: The structured AI review result.
     """
-    result = await review_service.review_pull_request(payload)
+    try:
+        result = await review_service.review_pull_request(payload)
+    except Exception as exc:
+        error_message = str(exc)
+        return JSONResponse(
+            status_code=502,
+            content={
+                "success": False,
+                "error": error_message,
+                "details": {
+                    "repo": f"{payload.repo_owner}/{payload.repo_name}",
+                    "pr_number": payload.pr_number,
+                },
+            },
+        )
+
     return APIResponse(success=True, message="Review completed successfully.", data=result)
 
 

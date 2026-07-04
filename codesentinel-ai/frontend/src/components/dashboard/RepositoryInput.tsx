@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { Search } from "lucide-react";
+import { Search, Sparkles } from "lucide-react";
 import { Spinner } from "@/components/ui/Spinner";
 import { parseRepoFullName } from "@/lib/utils";
 
@@ -37,6 +37,13 @@ export function RepositoryInput({ onSubmit, isLoading }: RepositoryInputProps) {
 
     const [owner, name] = parsed;
     onSubmit(owner, name, prNum);
+  }
+
+  function handleSampleSubmit() {
+    setValidationError(null);
+    setRepoFullName("octocat/Hello-World");
+    setPrNumber("1");
+    onSubmit("octocat", "Hello-World", 1);
   }
 
   return (
@@ -95,6 +102,19 @@ export function RepositoryInput({ onSubmit, isLoading }: RepositoryInputProps) {
           {isLoading ? "Analyzing..." : "Analyze PR"}
         </button>
       </form>
+
+      <div className="mt-4 flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          onClick={handleSampleSubmit}
+          disabled={isLoading}
+          className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700 transition hover:bg-blue-100 disabled:cursor-not-allowed disabled:opacity-70"
+        >
+          <Sparkles className="h-4 w-4" />
+          Try sample PR
+        </button>
+        <span className="text-sm text-slate-500">Example: octocat/Hello-World • PR #1</span>
+      </div>
 
       {validationError && <p className="mt-3 text-sm font-medium text-rose-600">{validationError}</p>}
     </div>
