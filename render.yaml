@@ -42,7 +42,7 @@ services:
 
     buildCommand: npm install && npm run build
 
-    startCommand: node .next/standalone/server.js
+    startCommand: npm run start -- --port $PORT
 
     autoDeploy: true
 
