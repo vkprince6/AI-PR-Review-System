@@ -18,6 +18,7 @@ from app.core.config import settings
 from app.core.database import init_db
 from app.core.exceptions import CodeSentinelException
 from app.core.logger import configure_logging, logger
+from app.core.middleware import RequestLoggingMiddleware
 
 
 @asynccontextmanager
@@ -61,6 +62,7 @@ def create_application() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+    app.add_middleware(RequestLoggingMiddleware)
 
     register_exception_handlers(app)
     register_routers(app)

@@ -2,13 +2,13 @@
 Pull Request repository.
 
 Provides data access methods specific to PullRequestModel, including
-lookups by GitHub identity (owner/repo/pr_number).
+lookups by GitHub identity (owner/repo/pr_number) and paginated history.
 """
 
-from typing import Optional
+from typing import Optional, Sequence
 
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 
 from app.models.pull_request import PullRequestModel
 from app.repositories.base_repository import BaseRepository
@@ -46,6 +46,45 @@ class PullRequestRepository(BaseRepository[PullRequestModel]):
             PullRequestModel.pr_number == pr_number,
         )
         return self.db.execute(statement).scalar_one_or_none()
+
+    def get_with_reviews(self, record_id: int) -> Optional[PullRequestModel]:
+        """
+        Fetch a Pull Request along with its full review history, eagerly loaded.
+
+        Args:
+            record_id: Primary key of the Pull Request.
+
+        Returns:
+            Optional[PullRequestModel]: The record with reviews loaded, or None.
+        """
+        statement = (
+            select(PullRequestModel)
+            .where(PullRequestModel.id == record_id)
+            .options(selectinload(PullRequestModel.reviews))
+        )
+        return self.db.execute(statement).scalar_one_or_none()
+
+    def list_paginated_with_reviews(
+        self, offset: int, limit: int
+    ) -> Sequence[PullRequestModel]:
+        """
+        Retrieve a page of Pull Requests with their reviews eagerly loaded.
+
+        Args:
+            offset: Number of records to skip.
+            limit: Maximum number of records to return.
+
+        Returns:
+            Sequence[PullRequestModel]: The requested page, newest first.
+        """
+        statement = (
+            select(PullRequestModel)
+            .options(selectinload(PullRequestModel.reviews))
+            .order_by(PullRequestModel.id.desc())
+            .offset(offset)
+            .limit(limit)
+        )
+        return self.db.execute(statement).scalars().all()
 
     def upsert(self, pull_request: PullRequestModel) -> PullRequestModel:
         """

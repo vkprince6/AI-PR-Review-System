@@ -13,6 +13,7 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.services.github_service import GitHubService
 from app.services.groq_service import GroqService
+from app.services.history_service import HistoryService
 from app.services.review_service import ReviewService
 
 
@@ -57,3 +58,16 @@ def get_review_service(
         ReviewService: An initialized review orchestration service.
     """
     return ReviewService(github_service=github_service, groq_service=groq_service, db=db)
+
+
+def get_history_service(db: Session = Depends(get_db)) -> HistoryService:
+    """
+    Provide a fully-wired HistoryService instance.
+
+    Args:
+        db: Request-scoped SQLAlchemy session.
+
+    Returns:
+        HistoryService: An initialized history/CRUD service.
+    """
+    return HistoryService(db=db)
