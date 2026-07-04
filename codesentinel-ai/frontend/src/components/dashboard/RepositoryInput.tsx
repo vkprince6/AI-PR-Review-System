@@ -40,15 +40,23 @@ export function RepositoryInput({ onSubmit, isLoading }: RepositoryInputProps) {
   }
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-gray-900">Review a Pull Request</h2>
-      <p className="mt-1 text-sm text-gray-500">
-        Enter a public GitHub repository and Pull Request number to run an AI-powered review.
-      </p>
+    <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_10px_40px_rgba(15,23,42,0.06)] sm:p-8">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <p className="text-sm font-medium text-blue-600">Instant AI review</p>
+          <h2 className="mt-1 text-xl font-semibold text-slate-900">Review a Pull Request</h2>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+            Enter a public GitHub repository and pull request number to receive a concise, production-ready review.
+          </p>
+        </div>
+        <div className="rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700">
+          Fast • Reliable • Actionable
+        </div>
+      </div>
 
-      <form onSubmit={handleSubmit} className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-end">
+      <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4 lg:flex-row lg:items-end">
         <div className="flex-1">
-          <label htmlFor="repo" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="repo" className="block text-sm font-medium text-slate-700">
             Repository
           </label>
           <input
@@ -58,12 +66,12 @@ export function RepositoryInput({ onSubmit, isLoading }: RepositoryInputProps) {
             value={repoFullName}
             onChange={(e) => setRepoFullName(e.target.value)}
             disabled={isLoading}
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-gray-50"
+            className="mt-2 block w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2.5 text-sm shadow-sm outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100 disabled:bg-slate-100"
           />
         </div>
 
-        <div className="w-full sm:w-40">
-          <label htmlFor="pr-number" className="block text-sm font-medium text-gray-700">
+        <div className="w-full lg:w-40">
+          <label htmlFor="pr-number" className="block text-sm font-medium text-slate-700">
             PR Number
           </label>
           <input
@@ -74,21 +82,21 @@ export function RepositoryInput({ onSubmit, isLoading }: RepositoryInputProps) {
             value={prNumber}
             onChange={(e) => setPrNumber(e.target.value)}
             disabled={isLoading}
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-gray-50"
+            className="mt-2 block w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2.5 text-sm shadow-sm outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100 disabled:bg-slate-100"
           />
         </div>
 
         <button
           type="submit"
           disabled={isLoading}
-          className="flex items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-300"
+          className="flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-400"
         >
           {isLoading ? <Spinner size={16} className="text-white" /> : <Search className="h-4 w-4" />}
           {isLoading ? "Analyzing..." : "Analyze PR"}
         </button>
       </form>
 
-      {validationError && <p className="mt-3 text-sm text-red-600">{validationError}</p>}
+      {validationError && <p className="mt-3 text-sm font-medium text-rose-600">{validationError}</p>}
     </div>
   );
 }

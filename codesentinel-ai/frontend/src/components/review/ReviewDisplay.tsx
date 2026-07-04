@@ -16,25 +16,31 @@ interface ReviewDisplayProps {
 export function ReviewDisplay({ review }: ReviewDisplayProps) {
   return (
     <div className="space-y-6">
-      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="text-sm text-gray-500">{review.repo_full_name} · PR #{review.pr_number}</p>
-            <h2 className="mt-1 text-xl font-bold text-gray-900">{review.pr_title}</h2>
-            <div className="mt-3 flex items-center gap-2">
+      <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_10px_40px_rgba(15,23,42,0.06)] sm:p-8">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+          <div className="max-w-2xl">
+            <p className="text-sm font-medium text-slate-500">
+              {review.repo_full_name} · PR #{review.pr_number}
+            </p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
+              {review.pr_title}
+            </h2>
+            <div className="mt-4 flex flex-wrap items-center gap-2">
               <RiskBadge riskLevel={review.review.risk_level} />
-              <span className="text-xs text-gray-400">Model: {review.model_used}</span>
+              <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-500">
+                Model: {review.model_used}
+              </span>
             </div>
           </div>
           <ScoreGauge score={review.review.overall_score} />
         </div>
-        <p className="mt-5 border-t border-gray-100 pt-4 text-sm leading-relaxed text-gray-700">
+        <p className="mt-6 rounded-2xl border border-slate-100 bg-slate-50/70 p-4 text-sm leading-7 text-slate-700">
           {review.review.summary}
         </p>
       </div>
 
-      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-        <h3 className="text-base font-semibold text-gray-900">
+      <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_10px_40px_rgba(15,23,42,0.06)] sm:p-8">
+        <h3 className="text-base font-semibold text-slate-900">
           Issues Found ({review.review.issues.length})
         </h3>
         <div className="mt-4 space-y-3">
@@ -50,12 +56,12 @@ export function ReviewDisplay({ review }: ReviewDisplayProps) {
       </div>
 
       {review.review.strengths.length > 0 && (
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-          <h3 className="text-base font-semibold text-gray-900">Strengths</h3>
+        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_10px_40px_rgba(15,23,42,0.06)] sm:p-8">
+          <h3 className="text-base font-semibold text-slate-900">Strengths</h3>
           <ul className="mt-4 space-y-2">
             {review.review.strengths.map((strength, idx) => (
-              <li key={idx} className="flex items-start gap-2 text-sm text-gray-700">
-                <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600" />
+              <li key={idx} className="flex items-start gap-2 text-sm text-slate-700">
+                <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-emerald-600" />
                 {strength}
               </li>
             ))}

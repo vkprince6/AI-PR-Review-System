@@ -16,10 +16,13 @@ export default function DashboardPage() {
 
   return (
     <PageContainer>
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-        <p className="mt-1 text-sm text-gray-500">
-          Submit a Pull Request for instant AI-powered code review.
+      <div className="mb-6 rounded-3xl border border-slate-200 bg-white/80 p-6 shadow-[0_10px_40px_rgba(15,23,42,0.06)] backdrop-blur-sm">
+        <p className="text-sm font-medium text-blue-600">CodeSentinel AI</p>
+        <h1 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
+          Review pull requests with clarity and speed.
+        </h1>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+          Submit a pull request to receive a focused, production-style review with risk insights, issue detection, and a quality score.
         </p>
       </div>
 
