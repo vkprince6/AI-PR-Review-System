@@ -61,7 +61,7 @@ class Settings(BaseSettings):
     github_api_timeout: float = Field(default=15.0)
 
     groq_api_key: str = Field(default="")
-    groq_model: str = Field(default="llama-3.3-70b-versatile")
+    groq_model: str = Field(default="openai/gpt-oss-120b")
     groq_api_timeout: float = Field(default=30.0)
     groq_max_tokens: int = Field(default=4096)
     groq_temperature: float = Field(default=0.2)
