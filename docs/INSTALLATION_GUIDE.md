@@ -2,18 +2,19 @@
 
 ## Prerequisites
 
-- Python 3.14+
+- Python 3.12+
 - Node.js 20+
-- A GitHub Personal Access Token (public repo access)
-- A Groq API key (free tier available at console.groq.com)
+- Optional: a GitHub token and Groq API key for fallback server-side use
+- Optional: a storage key if you want to keep history isolated per user/session
 
 ## Option A — Docker (recommended for quick evaluation)
 
 ```bash
 git clone <your-repo-url>
-cd codesentinel-ai
-cp backend/.env.example backend/.env
-# Edit backend/.env: fill in GITHUB_TOKEN and GROQ_API_KEY
+cd AI-PR-Review-System
+git checkout main
+cp codesentinel-ai/backend/.env.example codesentinel-ai/backend/.env
+# Optional: add fallback GITHUB_TOKEN and GROQ_API_KEY in codesentinel-ai/backend/.env
 docker compose up --build
 ```
 
@@ -24,12 +25,12 @@ Visit `http://localhost:3000` (frontend) and `http://localhost:8000/docs` (backe
 ### 1. Backend
 
 ```bash
-cd backend
+cd codesentinel-ai/backend
 python3 -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 cp .env.example .env
-# Edit .env: fill in GITHUB_TOKEN and GROQ_API_KEY
+# Optional: add fallback GITHUB_TOKEN and GROQ_API_KEY in .env
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
@@ -40,7 +41,7 @@ Verify: `curl http://localhost:8000/health`
 In a separate terminal:
 
 ```bash
-cd frontend
+cd codesentinel-ai/frontend
 npm install
 cp .env.example .env.local
 npm run dev
@@ -51,9 +52,15 @@ Visit `http://localhost:3000`.
 ### 3. Run the test suite
 
 ```bash
-cd backend
-pytest --cov=app --cov-report=term-missing -v
+cd codesentinel-ai/backend
+pytest -q
 ```
+
+## Notes on credentials and history
+
+- The review form now accepts optional `GitHub token`, `Groq API key`, and `Storage key` inputs.
+- If you do not enter them, the backend can still use fallback values from `.env` when configured.
+- History is stored separately per storage key, so different users or sessions do not mix review history.
 
 ## GitHub Codespaces Setup
 

@@ -87,8 +87,8 @@ export function RepositoryInput({ onSubmit, isLoading }: RepositoryInputProps) {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4 lg:flex-row lg:items-end">
-        <div className="flex-1">
+      <form onSubmit={handleSubmit} className="mt-6 grid gap-4 xl:grid-cols-[2.2fr_0.7fr_1fr_1fr_1fr_auto] xl:items-end">
+        <div className="min-w-0">
           <label htmlFor="repo" className="block text-sm font-medium text-slate-700">
             Repository
           </label>
@@ -103,7 +103,7 @@ export function RepositoryInput({ onSubmit, isLoading }: RepositoryInputProps) {
           />
         </div>
 
-        <div className="w-full lg:w-40">
+        <div className="min-w-0">
           <label htmlFor="pr-number" className="block text-sm font-medium text-slate-700">
             PR Number
           </label>
@@ -167,7 +167,7 @@ export function RepositoryInput({ onSubmit, isLoading }: RepositoryInputProps) {
         <button
           type="submit"
           disabled={isLoading}
-          className="flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-400"
+          className="flex h-[48px] items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-400"
         >
           {isLoading ? <Spinner size={16} className="text-white" /> : <Search className="h-4 w-4" />}
           {isLoading ? "Analyzing..." : "Analyze PR"}

@@ -1,6 +1,6 @@
 # Environment Setup
 
-## Backend (`backend/.env`)
+## Backend (`codesentinel-ai/backend/.env`)
 
 | Variable | Description | Example |
 |---|---|---|
@@ -11,11 +11,11 @@
 | `HOST` | Server bind address | `0.0.0.0` |
 | `PORT` | Server bind port | `8000` |
 | `DATABASE_URL` | SQLAlchemy connection string | `sqlite:///./codesentinel.db` |
-| `GITHUB_TOKEN` | GitHub Personal Access Token (no special scopes needed for public repos) | Generate at github.com/settings/tokens |
+| `GITHUB_TOKEN` | Optional fallback GitHub token for requests without per-request credentials | Generate at github.com/settings/tokens |
 | `GITHUB_API_BASE_URL` | GitHub REST API base URL | `https://api.github.com` |
 | `GITHUB_API_TIMEOUT` | Timeout (seconds) for GitHub requests | `15.0` |
-| `GROQ_API_KEY` | Groq API key | Generate at console.groq.com/keys |
-| `GROQ_MODEL` | Groq model identifier used for review inference | e.g. a currently supported Groq model — check console.groq.com for active models before deploying, as models are periodically deprecated |
+| `GROQ_API_KEY` | Optional fallback Groq API key | Generate at console.groq.com/keys |
+| `GROQ_MODEL` | Groq / OpenAI-compatible model identifier used for review inference | `openai/gpt-oss-120b` |
 | `GROQ_API_TIMEOUT` | Timeout (seconds) for Groq requests | `30.0` |
 | `GROQ_MAX_TOKENS` | Max tokens per completion | `4096` |
 | `GROQ_TEMPERATURE` | Sampling temperature | `0.2` |
@@ -24,14 +24,21 @@
 | `LOG_LEVEL` | Minimum log level | `INFO` |
 | `LOG_FILE_PATH` | Log file location | `logs/codesentinel.log` |
 | `ALLOWED_ORIGINS` | Comma-separated CORS-allowed origins (no trailing slashes) | `http://localhost:3000` |
+| `HISTORY_STORAGE_DIR` | Directory for per-storage-key JSON history files | `./history_storage` |
 
-## Frontend (`frontend/.env.local`)
+## Frontend (`codesentinel-ai/frontend/.env.local`)
 
 | Variable | Description | Example |
 |---|---|---|
 | `NEXT_PUBLIC_API_BASE_URL` | Full base URL of the backend API, including `/api/v1` | `http://localhost:8000/api/v1` |
 
 **Important:** `NEXT_PUBLIC_*` variables are baked into the frontend at build time. Changing this value requires restarting `npm run dev` (development) or rebuilding the Docker image (production).
+
+## Runtime behavior notes
+
+- The review form can send an optional `storage key`, `GitHub token`, and `Groq API key` with each request.
+- If those values are omitted, the backend falls back to any values defined in `.env`.
+- Review history is kept separate per storage key and written to the configured history storage directory.
 
 ## GitHub Codespaces Note
 

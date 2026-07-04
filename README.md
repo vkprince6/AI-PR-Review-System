@@ -6,20 +6,28 @@
 
 | Layer | Technology |
 |---|---|
-| Backend | Python 3.14, FastAPI, SQLAlchemy, SQLite, HTTPX, Pydantic, Loguru |
+| Backend | Python 3.12+, FastAPI, SQLAlchemy, SQLite, HTTPX, Pydantic, Loguru |
 | Frontend | Next.js, React, TypeScript, TailwindCSS |
-| AI | Groq API (structured JSON output), prompt engineering |
+| AI | Groq / OpenAI-compatible structured review generation |
 | External API | GitHub REST API |
 | Architecture | Clean Architecture (API / Services / Repositories / Models / Schemas / Core / Utils / Prompts) |
+
+## What changed in this version
+
+- The app no longer depends on a single owner-controlled GitHub token or Groq key for every request.
+- Users can optionally supply a GitHub token and Groq API key per review request from the UI.
+- Review history is isolated by a storage key, so different users or sessions do not share the same history.
+- History is stored in JSON files per storage key instead of a shared history table.
 
 ## Features
 
 - Submit any public GitHub repository + PR number for instant AI code review
 - Structured output: quality score (0-10), risk level, categorized issues with suggested fixes, and strengths
+- Per-user or per-session history isolation using a storage key
 - Full review history with pagination, detail view, and delete
-- Enterprise backend patterns: dependency injection, repository pattern, custom exception hierarchy, structured logging, request correlation IDs
+- Optional per-request credentials from the frontend
 - Fully mocked automated test suite (no real API calls required to run tests)
-- Dockerized for one-command local orchestration
+- Dockerized for local orchestration
 
 ## Documentation
 
@@ -33,8 +41,10 @@
 ## Quick Start (Docker)
 
 ```bash
-cp backend/.env.example backend/.env
-# Fill in GITHUB_TOKEN and GROQ_API_KEY in backend/.env
+git clone <your-repo-url>
+cd AI-PR-Review-System
+cp codesentinel-ai/backend/.env.example codesentinel-ai/backend/.env
+# Optional: add fallback secrets in codesentinel-ai/backend/.env
 docker compose up --build
 ```
 
@@ -46,13 +56,16 @@ See the full [Installation Guide](docs/INSTALLATION_GUIDE.md).
 
 ```bash
 # Backend
-cd backend && python3 -m venv .venv && source .venv/bin/activate
+cd codesentinel-ai/backend
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env   # fill in credentials
-uvicorn app.main:app --reload --port 8000
+cp .env.example .env   # optional fallback credentials
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
 # Frontend (separate terminal)
-cd frontend && npm install
+cd ../frontend
+npm install
 cp .env.example .env.local
 npm run dev
 ```
@@ -60,10 +73,10 @@ npm run dev
 ## Running Tests
 
 ```bash
-cd backend
-pytest --cov=app --cov-report=term-missing -v
+cd codesentinel-ai/backend
+pytest -q
 ```
 
 ## Project Status
 
-MVP complete and manually + automatically verified end-to-end. See [PROJECT_AUDIT_REPORT.md](docs/PROJECT_AUDIT_REPORT.md) for known limitations and recommended next steps before real production deployment.
+MVP complete and verified end-to-end. See [PROJECT_AUDIT_REPORT.md](docs/PROJECT_AUDIT_REPORT.md) for known limitations and recommended next steps before real production deployment.

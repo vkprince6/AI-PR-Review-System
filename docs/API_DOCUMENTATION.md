@@ -43,8 +43,18 @@ Returns full PR metadata and changed files with diffs.
 
 **Request:**
 ```json
-{ "repo_owner": "facebook", "repo_name": "react", "pr_number": 1 }
+{
+  "repo_owner": "facebook",
+  "repo_name": "react",
+  "pr_number": 1,
+  "storage_key": "user-123",
+  "github_token": "ghp_123",
+  "groq_api_key": "gsk_123"
+}
 ```
+
+The `storage_key`, `github_token`, and `groq_api_key` fields are optional. If omitted, the server uses any fallback values from the backend environment.
+
 **Response `200`:**
 ```json
 {
@@ -71,7 +81,7 @@ Returns full PR metadata and changed files with diffs.
       ],
       "strengths": ["..."]
     },
-    "model_used": "...",
+    "model_used": "openai/gpt-oss-120b",
     "created_at": "2026-07-04T06:46:18"
   }
 }
@@ -84,15 +94,15 @@ Fetch a stored review by ID. `404` if not found.
 
 ## GET /history/pull-requests?page=1&page_size=10
 
-Paginated list of reviewed PRs with latest review score/risk summary.
+Paginated list of reviewed PRs for the active storage key. Use the `x-storage-key` header to target a specific user or session scope.
 
 ## DELETE /history/pull-requests/{id}
 
-Deletes a PR and cascades to all its reviews. `204` on success, `404` if not found.
+Deletes a PR record for the active storage key. `204` on success, `404` if not found.
 
 ## GET /history/reviews?page=1&page_size=10
 
-Paginated list of all review records with PR context.
+Paginated list of all review records for the active storage key.
 
 ## DELETE /history/reviews/{id}
 
