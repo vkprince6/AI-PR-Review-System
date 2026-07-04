@@ -12,7 +12,7 @@ from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
-from app.core.exceptions import GroqAPIException, ValidationException
+from app.core.exceptions import GitHubAPIException, GroqAPIException, ValidationException
 from app.core.logger import logger
 from app.models.pull_request import PullRequestModel
 from app.models.review import ReviewModel
@@ -75,9 +75,22 @@ class ReviewService:
             pr=request.pr_number,
         )
 
-        pr_data = await self.github_service.get_full_pull_request(
-            request.repo_owner, request.repo_name, request.pr_number
-        )
+        try:
+            pr_data = await self.github_service.get_full_pull_request(
+                request.repo_owner, request.repo_name, request.pr_number
+            )
+        except GitHubAPIException as exc:
+            logger.error(
+                "GitHub fetch failed during review | repo={owner}/{name} | pr={pr} | error={error}",
+                owner=request.repo_owner,
+                name=request.repo_name,
+                pr=request.pr_number,
+                error=str(exc),
+            )
+            raise GitHubAPIException(
+                message="Unable to fetch the requested pull request from GitHub. Check the repository and PR number or GitHub access settings.",
+                details={"repo": f"{request.repo_owner}/{request.repo_name}", "pr_number": request.pr_number, **exc.details},
+            ) from exc
 
         diff_text = build_diff_text(
             changed_files=[cf.model_dump() for cf in pr_data.changed_files],
@@ -86,7 +99,20 @@ class ReviewService:
         )
 
         user_prompt = build_review_user_prompt(pr_data, diff_text)
-        raw_result = await self.groq_service.generate_structured_review(SYSTEM_PROMPT, user_prompt)
+        try:
+            raw_result = await self.groq_service.generate_structured_review(SYSTEM_PROMPT, user_prompt)
+        except GroqAPIException as exc:
+            logger.error(
+                "Groq review generation failed | repo={owner}/{name} | pr={pr} | error={error}",
+                owner=request.repo_owner,
+                name=request.repo_name,
+                pr=request.pr_number,
+                error=str(exc),
+            )
+            raise GroqAPIException(
+                message="The AI review service could not generate a review right now. Please try again shortly.",
+                details={"repo": f"{request.repo_owner}/{request.repo_name}", "pr_number": request.pr_number, **exc.details},
+            ) from exc
 
         try:
             review_result = ReviewResultSchema.model_validate(raw_result)
