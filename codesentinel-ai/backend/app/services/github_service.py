@@ -27,14 +27,15 @@ class GitHubService:
     mapping so callers never touch raw HTTP concerns.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, token: str | None = None) -> None:
         """Initialize the GitHub service with an authenticated HTTPX client."""
         headers = {
             "Accept": "application/vnd.github+json",
             "X-GitHub-Api-Version": "2022-11-28",
         }
-        if settings.github_token:
-            headers["Authorization"] = f"Bearer {settings.github_token}"
+        effective_token = token or settings.github_token
+        if effective_token:
+            headers["Authorization"] = f"Bearer {effective_token}"
 
         self._client = httpx.AsyncClient(
             base_url=settings.github_api_base_url,
@@ -69,11 +70,12 @@ class GitHubService:
 
         if response.status_code == 404:
             raise GitHubAPIException(
-                message="GitHub resource not found.", details={"url": url, "status": 404}
+                message="GitHub resource not found. Please verify the repository and PR number.",
+                details={"url": url, "status": 404},
             )
         if response.status_code == 403:
             raise GitHubAPIException(
-                message="GitHub API rate limit exceeded or access forbidden.",
+                message="GitHub API access was denied or rate limited. For public repositories, ensure the backend can reach GitHub; for private repositories, add a valid GitHub token.",
                 details={"url": url, "status": 403},
             )
         if response.status_code >= 400:

@@ -48,6 +48,9 @@ class ReviewRequestSchema(BaseModel):
     repo_owner: str = Field(..., min_length=1, examples=["facebook"])
     repo_name: str = Field(..., min_length=1, examples=["react"])
     pr_number: int = Field(..., gt=0, examples=[1])
+    storage_key: Optional[str] = Field(default=None, examples=["user-123"])
+    github_token: Optional[str] = Field(default=None, examples=["ghp_123"])
+    groq_api_key: Optional[str] = Field(default=None, examples=["gsk_123"])
 
     @field_validator("repo_owner", "repo_name")
     @classmethod

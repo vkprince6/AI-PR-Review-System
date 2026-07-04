@@ -9,7 +9,7 @@ from app.main import app
 from app.schemas.github_schemas import ChangedFileSchema, PullRequestSchema
 
 
-def _seed_one_review(client) -> dict:
+def _seed_one_review(client, storage_key: str | None = None, pr_number: int = 1) -> dict:
     """Helper: analyze one mocked PR so history endpoints have data to return."""
     mock_github = AsyncMock()
     mock_github.get_full_pull_request.return_value = PullRequestSchema(
@@ -39,9 +39,11 @@ def _seed_one_review(client) -> dict:
     app.dependency_overrides[get_github_service] = lambda: mock_github
     app.dependency_overrides[get_groq_service] = lambda: mock_groq
 
+    headers = {"x-storage-key": storage_key} if storage_key else {}
     response = client.post(
         "/api/v1/review/analyze",
-        json={"repo_owner": "tester", "repo_name": "repo", "pr_number": 1},
+        json={"repo_owner": "tester", "repo_name": "repo", "pr_number": pr_number},
+        headers=headers,
     )
     app.dependency_overrides.pop(get_github_service, None)
     app.dependency_overrides.pop(get_groq_service, None)
@@ -75,6 +77,19 @@ def test_delete_pull_request_removes_record(client):
 
     list_after = client.get("/api/v1/history/pull-requests")
     assert list_after.json()["data"]["total"] == 0
+
+
+def test_history_is_isolated_by_storage_key(client):
+    _seed_one_review(client, storage_key="user-a", pr_number=1)
+    _seed_one_review(client, storage_key="user-b", pr_number=2)
+
+    user_a_response = client.get("/api/v1/history/pull-requests", headers={"x-storage-key": "user-a"})
+    user_b_response = client.get("/api/v1/history/pull-requests", headers={"x-storage-key": "user-b"})
+
+    assert user_a_response.status_code == 200
+    assert user_b_response.status_code == 200
+    assert user_a_response.json()["data"]["total"] == 1
+    assert user_b_response.json()["data"]["total"] == 1
 
 
 def test_delete_nonexistent_pull_request_returns_404(client):

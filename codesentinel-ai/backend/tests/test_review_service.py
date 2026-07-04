@@ -13,6 +13,7 @@ from app.core.exceptions import ValidationException
 from app.schemas.github_schemas import ChangedFileSchema, PullRequestSchema
 from app.schemas.review_schemas import ReviewRequestSchema
 from app.services.review_service import ReviewService
+from app.services.storage_service import StorageService
 
 
 def _fake_pull_request() -> PullRequestSchema:
@@ -82,8 +83,8 @@ async def test_review_pull_request_success(db_session):
 
 
 @pytest.mark.asyncio
-async def test_review_pull_request_persists_to_database(db_session):
-    """Reviewing a PR should create retrievable PullRequest and Review records."""
+async def test_review_pull_request_persists_to_storage(db_session):
+    """Reviewing a PR should create retrievable storage records for that user/session."""
     mock_github = AsyncMock()
     mock_github.get_full_pull_request.return_value = _fake_pull_request()
 
@@ -95,13 +96,11 @@ async def test_review_pull_request_persists_to_database(db_session):
 
     await service.review_pull_request(request)
 
-    saved_pr = service.pull_request_repository.get_by_identity("testuser", "testrepo", 1)
-    assert saved_pr is not None
-    assert saved_pr.title == "Add login feature"
-
-    saved_review = service.review_repository.get_latest_by_pull_request_id(saved_pr.id)
-    assert saved_review is not None
-    assert saved_review.risk_level == "HIGH"
+    storage_service = StorageService(storage_key="default")
+    records = storage_service.list_pull_requests()
+    assert len(records) == 1
+    assert records[0]["pr_title"] == "Add login feature"
+    assert records[0]["latest_review_score"] == 4.5
 
 
 @pytest.mark.asyncio

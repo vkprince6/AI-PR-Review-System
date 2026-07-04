@@ -37,7 +37,7 @@ class HistoryService:
         self.review_repository = ReviewRepository(db)
 
     def list_pull_requests(
-        self, params: PaginationParams
+        self, params: PaginationParams, storage_key: Optional[str] = None
     ) -> PaginatedResponse[PullRequestHistoryItemSchema]:
         """
         List Pull Requests with pagination, including their latest review summary.
@@ -118,7 +118,9 @@ class HistoryService:
             )
         self.pull_request_repository.delete(record)
 
-    def list_reviews(self, params: PaginationParams) -> PaginatedResponse[ReviewHistoryItemSchema]:
+    def list_reviews(
+        self, params: PaginationParams, storage_key: Optional[str] = None
+    ) -> PaginatedResponse[ReviewHistoryItemSchema]:
         """
         List Reviews with pagination, including parent Pull Request context.
 

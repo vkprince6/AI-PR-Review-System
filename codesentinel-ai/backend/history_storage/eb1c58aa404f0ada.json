@@ -1,0 +1,65 @@
+[
+  {
+    "id": 1783160110678,
+    "repo_owner": "tester",
+    "repo_name": "repo",
+    "pr_number": 1,
+    "pr_title": "Seed PR",
+    "author": "tester",
+    "additions": 5,
+    "deletions": 1,
+    "changed_files_count": 1,
+    "html_url": "https://github.com/tester/repo/pull/1",
+    "summary": "Looks fine.",
+    "overall_score": 8.0,
+    "risk_level": "LOW",
+    "issues": [],
+    "strengths": [
+      "Simple change"
+    ],
+    "model_used": "openai/gpt-oss-120b",
+    "created_at": "2026-07-04T10:15:10.679109+00:00"
+  },
+  {
+    "id": 1783160490721,
+    "repo_owner": "tester",
+    "repo_name": "repo",
+    "pr_number": 1,
+    "pr_title": "Seed PR",
+    "author": "tester",
+    "additions": 5,
+    "deletions": 1,
+    "changed_files_count": 1,
+    "html_url": "https://github.com/tester/repo/pull/1",
+    "summary": "Looks fine.",
+    "overall_score": 8.0,
+    "risk_level": "LOW",
+    "issues": [],
+    "strengths": [
+      "Simple change"
+    ],
+    "model_used": "openai/gpt-oss-120b",
+    "created_at": "2026-07-04T10:21:30.721936+00:00"
+  },
+  {
+    "id": 1783160548635,
+    "repo_owner": "tester",
+    "repo_name": "repo",
+    "pr_number": 1,
+    "pr_title": "Seed PR",
+    "author": "tester",
+    "additions": 5,
+    "deletions": 1,
+    "changed_files_count": 1,
+    "html_url": "https://github.com/tester/repo/pull/1",
+    "summary": "Looks fine.",
+    "overall_score": 8.0,
+    "risk_level": "LOW",
+    "issues": [],
+    "strengths": [
+      "Simple change"
+    ],
+    "model_used": "openai/gpt-oss-120b",
+    "created_at": "2026-07-04T10:22:28.635679+00:00"
+  }
+]

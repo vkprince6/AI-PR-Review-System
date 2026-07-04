@@ -73,6 +73,7 @@ class Settings(BaseSettings):
     log_file_path: str = Field(default="logs/codesentinel.log")
 
     allowed_origins: str = Field(default="http://localhost:3000")
+    history_storage_dir: str = Field(default="./history_storage")
 
     @field_validator("log_level")
     @classmethod

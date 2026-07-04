@@ -18,9 +18,9 @@ from app.core.logger import logger
 class GroqService:
     """Service for performing structured-output AI inference via Groq."""
 
-    def __init__(self) -> None:
+    def __init__(self, api_key: str | None = None) -> None:
         """Initialize the Groq service with an authenticated async client."""
-        self._client = AsyncGroq(api_key=settings.groq_api_key)
+        self._client = AsyncGroq(api_key=api_key or settings.groq_api_key)
 
     async def generate_structured_review(
         self, system_prompt: str, user_prompt: str

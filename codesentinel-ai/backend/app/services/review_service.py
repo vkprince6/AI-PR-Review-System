@@ -7,6 +7,8 @@ structured validation -> database persistence -> API response assembly.
 """
 
 import json
+from datetime import datetime, timezone
+from typing import Optional
 
 from pydantic import ValidationError
 from sqlalchemy.orm import Session
@@ -22,6 +24,7 @@ from app.repositories.review_repository import ReviewRepository
 from app.schemas.review_schemas import ReviewRequestSchema, ReviewResponseSchema, ReviewResultSchema
 from app.services.github_service import GitHubService
 from app.services.groq_service import GroqService
+from app.services.storage_service import StorageService
 from app.utils.github_helpers import build_diff_text
 from app.utils.validators import validate_pr_number, validate_repo_full_name
 
@@ -51,7 +54,7 @@ class ReviewService:
         self.pull_request_repository = PullRequestRepository(db)
         self.review_repository = ReviewRepository(db)
 
-    async def review_pull_request(self, request: ReviewRequestSchema) -> ReviewResponseSchema:
+    async def review_pull_request(self, request: ReviewRequestSchema, storage_key: Optional[str] = None) -> ReviewResponseSchema:
         """
         Execute a full AI review of the specified Pull Request.
 
@@ -68,6 +71,10 @@ class ReviewService:
         """
         validate_pr_number(request.pr_number)
 
+        effective_storage_key = (storage_key or request.storage_key or "default").strip() or "default"
+        effective_github_token = request.github_token.strip() if request.github_token else None
+        effective_groq_api_key = request.groq_api_key.strip() if request.groq_api_key else None
+
         logger.info(
             "Starting review | repo={owner}/{name} | pr={pr}",
             owner=request.repo_owner,
@@ -75,8 +82,14 @@ class ReviewService:
             pr=request.pr_number,
         )
 
+        github_service = self.github_service
+        groq_service = self.groq_service
+        if effective_github_token or effective_groq_api_key:
+            github_service = GitHubService(token=effective_github_token)
+            groq_service = GroqService(api_key=effective_groq_api_key)
+
         try:
-            pr_data = await self.github_service.get_full_pull_request(
+            pr_data = await github_service.get_full_pull_request(
                 request.repo_owner, request.repo_name, request.pr_number
             )
         except GitHubAPIException as exc:
@@ -100,7 +113,7 @@ class ReviewService:
 
         user_prompt = build_review_user_prompt(pr_data, diff_text)
         try:
-            raw_result = await self.groq_service.generate_structured_review(SYSTEM_PROMPT, user_prompt)
+            raw_result = await groq_service.generate_structured_review(SYSTEM_PROMPT, user_prompt)
         except GroqAPIException as exc:
             logger.error(
                 "Groq review generation failed | repo={owner}/{name} | pr={pr} | error={error}",
@@ -122,6 +135,36 @@ class ReviewService:
                 message="AI-generated review did not match the expected schema.",
                 details={"validation_errors": exc.errors()},
             ) from exc
+
+        if effective_storage_key:
+            created_at = datetime.now(timezone.utc)
+            review_id = int(created_at.timestamp() * 1000)
+            storage_service = StorageService(storage_key=effective_storage_key)
+            storage_service.save_review(
+                review_id=review_id,
+                request=request,
+                pr_data=pr_data,
+                review_result=review_result,
+                model_used=settings.groq_model,
+            )
+            logger.info(
+                "Review completed | repo={owner}/{name} | pr={pr} | score={score} | risk={risk} | storage_key={storage_key}",
+                owner=request.repo_owner,
+                name=request.repo_name,
+                pr=request.pr_number,
+                score=review_result.overall_score,
+                risk=review_result.risk_level.value,
+                storage_key=effective_storage_key,
+            )
+            return ReviewResponseSchema(
+                id=review_id,
+                repo_full_name=f"{request.repo_owner}/{request.repo_name}",
+                pr_number=pr_data.pr_number,
+                pr_title=pr_data.title,
+                review=review_result,
+                model_used=settings.groq_model,
+                created_at=created_at,
+            )
 
         pull_request_model = PullRequestModel(
             repo_owner=request.repo_owner,

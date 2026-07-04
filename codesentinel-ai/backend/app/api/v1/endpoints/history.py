@@ -5,16 +5,15 @@ Exposes CRUD/listing endpoints over previously stored Pull Requests
 and AI Review records, with pagination support.
 """
 
-import json
-
-from fastapi import APIRouter, Depends, status
-from fastapi.responses import Response
+from fastapi import APIRouter, Depends, Header, status
+from fastapi.responses import JSONResponse, Response
 
 from app.core.dependencies import get_history_service
 from app.schemas.common import APIResponse
 from app.schemas.history_schemas import PullRequestHistoryItemSchema, ReviewHistoryItemSchema
 from app.schemas.review_schemas import ReviewResponseSchema, ReviewResultSchema
 from app.services.history_service import HistoryService
+from app.services.storage_service import StorageService
 from app.utils.pagination import PaginatedResponse, PaginationParams
 
 router = APIRouter(prefix="/history", tags=["History"])
@@ -28,6 +27,7 @@ router = APIRouter(prefix="/history", tags=["History"])
 async def list_pull_requests(
     params: PaginationParams = Depends(),
     history_service: HistoryService = Depends(get_history_service),
+    x_storage_key: str | None = Header(default=None, alias="x-storage-key"),
 ) -> APIResponse[PaginatedResponse[PullRequestHistoryItemSchema]]:
     """
     Retrieve a paginated list of Pull Requests that have been reviewed.
@@ -39,8 +39,13 @@ async def list_pull_requests(
     Returns:
         APIResponse[PaginatedResponse[PullRequestHistoryItemSchema]]: Paginated PR history.
     """
-    result = history_service.list_pull_requests(params)
-    return APIResponse(success=True, data=result)
+    effective_storage_key = (x_storage_key or "default").strip() or "default"
+    storage_service = StorageService(storage_key=effective_storage_key)
+    items = storage_service.list_pull_requests()
+    return APIResponse(
+        success=True,
+        data=PaginatedResponse.build(items=items, total=len(items), params=params),
+    )
 
 
 @router.get(
@@ -51,6 +56,7 @@ async def list_pull_requests(
 async def get_pull_request_detail(
     pull_request_id: int,
     history_service: HistoryService = Depends(get_history_service),
+    x_storage_key: str | None = Header(default=None, alias="x-storage-key"),
 ) -> APIResponse[ReviewResponseSchema]:
     """
     Fetch a Pull Request's stored data along with its most recent review.
@@ -62,25 +68,26 @@ async def get_pull_request_detail(
     Returns:
         APIResponse[ReviewResponseSchema]: The PR's latest review, structured.
     """
-    record = history_service.get_pull_request_detail(pull_request_id)
-    latest_review = max(record.reviews, key=lambda r: r.created_at)
-
+    effective_storage_key = (x_storage_key or "default").strip() or "default"
+    storage_service = StorageService(storage_key=effective_storage_key)
+    record = storage_service.get_pull_request_detail(pull_request_id)
+    if record is None:
+        return JSONResponse(status_code=404, content={"success": False, "error": "Pull request not found."})
     review_result = ReviewResultSchema(
-        summary=latest_review.summary,
-        overall_score=latest_review.overall_score,
-        risk_level=latest_review.risk_level,
-        issues=json.loads(latest_review.issues_json),
-        strengths=json.loads(latest_review.strengths_json),
+        summary=record["summary"],
+        overall_score=record["overall_score"],
+        risk_level=record["risk_level"],
+        issues=record["issues"],
+        strengths=record["strengths"],
     )
-
     response_data = ReviewResponseSchema(
-        id=latest_review.id,
-        repo_full_name=f"{record.repo_owner}/{record.repo_name}",
-        pr_number=record.pr_number,
-        pr_title=record.title,
+        id=record["id"],
+        repo_full_name=f"{record['repo_owner']}/{record['repo_name']}",
+        pr_number=record["pr_number"],
+        pr_title=record["pr_title"],
         review=review_result,
-        model_used=latest_review.model_used,
-        created_at=latest_review.created_at,
+        model_used=record["model_used"],
+        created_at=record["created_at"],
     )
     return APIResponse(success=True, data=response_data)
 
@@ -93,6 +100,7 @@ async def get_pull_request_detail(
 async def delete_pull_request(
     pull_request_id: int,
     history_service: HistoryService = Depends(get_history_service),
+    x_storage_key: str | None = Header(default=None, alias="x-storage-key"),
 ) -> Response:
     """
     Delete a stored Pull Request record (cascades to its reviews).
@@ -104,7 +112,11 @@ async def delete_pull_request(
     Returns:
         Response: An empty 204 No Content response.
     """
-    history_service.delete_pull_request(pull_request_id)
+    effective_storage_key = (x_storage_key or "default").strip() or "default"
+    storage_service = StorageService(storage_key=effective_storage_key)
+    deleted = storage_service.delete_pull_request(pull_request_id)
+    if not deleted:
+        return JSONResponse(status_code=404, content={"success": False, "error": "Pull request not found."})
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
@@ -116,6 +128,7 @@ async def delete_pull_request(
 async def list_reviews(
     params: PaginationParams = Depends(),
     history_service: HistoryService = Depends(get_history_service),
+    x_storage_key: str | None = Header(default=None, alias="x-storage-key"),
 ) -> APIResponse[PaginatedResponse[ReviewHistoryItemSchema]]:
     """
     Retrieve a paginated list of all AI-generated reviews.
@@ -127,8 +140,13 @@ async def list_reviews(
     Returns:
         APIResponse[PaginatedResponse[ReviewHistoryItemSchema]]: Paginated review history.
     """
-    result = history_service.list_reviews(params)
-    return APIResponse(success=True, data=result)
+    effective_storage_key = (x_storage_key or "default").strip() or "default"
+    storage_service = StorageService(storage_key=effective_storage_key)
+    items = storage_service.list_reviews()
+    return APIResponse(
+        success=True,
+        data=PaginatedResponse.build(items=items, total=len(items), params=params),
+    )
 
 
 @router.delete(
@@ -139,6 +157,7 @@ async def list_reviews(
 async def delete_review(
     review_id: int,
     history_service: HistoryService = Depends(get_history_service),
+    x_storage_key: str | None = Header(default=None, alias="x-storage-key"),
 ) -> Response:
     """
     Delete a single stored review record.
@@ -150,5 +169,9 @@ async def delete_review(
     Returns:
         Response: An empty 204 No Content response.
     """
-    history_service.delete_review(review_id)
+    effective_storage_key = (x_storage_key or "default").strip() or "default"
+    storage_service = StorageService(storage_key=effective_storage_key)
+    deleted = storage_service.delete_review(review_id)
+    if not deleted:
+        return JSONResponse(status_code=404, content={"success": False, "error": "Review not found."})
     return Response(status_code=status.HTTP_204_NO_CONTENT)

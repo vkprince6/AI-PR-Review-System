@@ -45,4 +45,7 @@ export interface ReviewRequest {
   repo_owner: string;
   repo_name: string;
   pr_number: number;
+  storage_key?: string;
+  github_token?: string;
+  groq_api_key?: string;
 }

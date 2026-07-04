@@ -4,9 +4,15 @@ import { useState, FormEvent } from "react";
 import { Search, Sparkles } from "lucide-react";
 import { Spinner } from "@/components/ui/Spinner";
 import { parseRepoFullName } from "@/lib/utils";
+import { getOrCreateStorageKey, setStorageKey } from "@/lib/storage";
 
 interface RepositoryInputProps {
-  onSubmit: (repoOwner: string, repoName: string, prNumber: number) => void;
+  onSubmit: (
+    repoOwner: string,
+    repoName: string,
+    prNumber: number,
+    options?: { storageKey?: string; githubToken?: string; groqApiKey?: string }
+  ) => void;
   isLoading: boolean;
 }
 
@@ -17,6 +23,9 @@ interface RepositoryInputProps {
 export function RepositoryInput({ onSubmit, isLoading }: RepositoryInputProps) {
   const [repoFullName, setRepoFullName] = useState("");
   const [prNumber, setPrNumber] = useState("");
+  const [storageKey, setStorageKeyInput] = useState("");
+  const [githubToken, setGithubToken] = useState("");
+  const [groqApiKey, setGroqApiKey] = useState("");
   const [validationError, setValidationError] = useState<string | null>(null);
 
   function handleSubmit(event: FormEvent) {
@@ -35,15 +44,32 @@ export function RepositoryInput({ onSubmit, isLoading }: RepositoryInputProps) {
       return;
     }
 
+    const resolvedStorageKey = storageKey.trim() || getOrCreateStorageKey();
+    if (resolvedStorageKey) {
+      setStorageKey(resolvedStorageKey);
+    }
+
     const [owner, name] = parsed;
-    onSubmit(owner, name, prNum);
+    onSubmit(owner, name, prNum, {
+      storageKey: resolvedStorageKey,
+      githubToken: githubToken.trim() || undefined,
+      groqApiKey: groqApiKey.trim() || undefined,
+    });
   }
 
   function handleSampleSubmit() {
     setValidationError(null);
     setRepoFullName("octocat/Hello-World");
     setPrNumber("1");
-    onSubmit("octocat", "Hello-World", 1);
+    const resolvedStorageKey = storageKey.trim() || getOrCreateStorageKey();
+    if (resolvedStorageKey) {
+      setStorageKey(resolvedStorageKey);
+    }
+    onSubmit("octocat", "Hello-World", 1, {
+      storageKey: resolvedStorageKey,
+      githubToken: githubToken.trim() || undefined,
+      groqApiKey: groqApiKey.trim() || undefined,
+    });
   }
 
   return (
@@ -88,6 +114,51 @@ export function RepositoryInput({ onSubmit, isLoading }: RepositoryInputProps) {
             placeholder="1234"
             value={prNumber}
             onChange={(e) => setPrNumber(e.target.value)}
+            disabled={isLoading}
+            className="mt-2 block w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2.5 text-sm shadow-sm outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100 disabled:bg-slate-100"
+          />
+        </div>
+
+        <div className="w-full lg:w-52">
+          <label htmlFor="storage-key" className="block text-sm font-medium text-slate-700">
+            Storage key
+          </label>
+          <input
+            id="storage-key"
+            type="text"
+            placeholder="optional user label"
+            value={storageKey}
+            onChange={(e) => setStorageKeyInput(e.target.value)}
+            disabled={isLoading}
+            className="mt-2 block w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2.5 text-sm shadow-sm outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100 disabled:bg-slate-100"
+          />
+        </div>
+
+        <div className="w-full lg:w-52">
+          <label htmlFor="github-token" className="block text-sm font-medium text-slate-700">
+            GitHub token
+          </label>
+          <input
+            id="github-token"
+            type="password"
+            placeholder="optional"
+            value={githubToken}
+            onChange={(e) => setGithubToken(e.target.value)}
+            disabled={isLoading}
+            className="mt-2 block w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2.5 text-sm shadow-sm outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100 disabled:bg-slate-100"
+          />
+        </div>
+
+        <div className="w-full lg:w-52">
+          <label htmlFor="groq-api-key" className="block text-sm font-medium text-slate-700">
+            Groq API key
+          </label>
+          <input
+            id="groq-api-key"
+            type="password"
+            placeholder="optional"
+            value={groqApiKey}
+            onChange={(e) => setGroqApiKey(e.target.value)}
             disabled={isLoading}
             className="mt-2 block w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2.5 text-sm shadow-sm outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100 disabled:bg-slate-100"
           />

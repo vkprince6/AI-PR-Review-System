@@ -18,6 +18,9 @@ services:
       - key: APP_ENV
         value: production
 
+      - key: DEBUG
+        value: "False"
+
       - key: DATABASE_URL
         value: sqlite:///./codesentinel.db
 
@@ -26,6 +29,12 @@ services:
 
       - key: ALLOWED_ORIGINS
         value: https://codesentinel-frontend-10dn.onrender.com,http://localhost:3000
+
+      - key: GITHUB_API_BASE_URL
+        value: https://api.github.com
+
+      - key: GITHUB_API_TIMEOUT
+        value: "15.0"
 
       - key: GITHUB_TOKEN
         sync: false

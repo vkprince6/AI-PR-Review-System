@@ -1,0 +1,250 @@
+[
+  {
+    "id": 1783160490617,
+    "repo_owner": "tester",
+    "repo_name": "repo",
+    "pr_number": 1,
+    "pr_title": "Seed PR",
+    "author": "tester",
+    "additions": 5,
+    "deletions": 1,
+    "changed_files_count": 1,
+    "html_url": "https://github.com/tester/repo/pull/1",
+    "summary": "Looks fine.",
+    "overall_score": 8.0,
+    "risk_level": "LOW",
+    "issues": [],
+    "strengths": [
+      "Simple change"
+    ],
+    "model_used": "openai/gpt-oss-120b",
+    "created_at": "2026-07-04T10:21:30.618052+00:00"
+  },
+  {
+    "id": 1783160490654,
+    "repo_owner": "tester",
+    "repo_name": "repo",
+    "pr_number": 1,
+    "pr_title": "Seed PR",
+    "author": "tester",
+    "additions": 5,
+    "deletions": 1,
+    "changed_files_count": 1,
+    "html_url": "https://github.com/tester/repo/pull/1",
+    "summary": "Looks fine.",
+    "overall_score": 8.0,
+    "risk_level": "LOW",
+    "issues": [],
+    "strengths": [
+      "Simple change"
+    ],
+    "model_used": "openai/gpt-oss-120b",
+    "created_at": "2026-07-04T10:21:30.654235+00:00"
+  },
+  {
+    "id": 1783160490789,
+    "repo_owner": "octocat",
+    "repo_name": "demo",
+    "pr_number": 7,
+    "pr_title": "Fix pagination bug",
+    "author": "octocat",
+    "additions": 10,
+    "deletions": 2,
+    "changed_files_count": 1,
+    "html_url": "https://github.com/octocat/demo/pull/7",
+    "summary": "Clean, well-structured fix.",
+    "overall_score": 9.0,
+    "risk_level": "LOW",
+    "issues": [],
+    "strengths": [
+      "Good test coverage",
+      "Clear commit message"
+    ],
+    "model_used": "openai/gpt-oss-120b",
+    "created_at": "2026-07-04T10:21:30.790025+00:00"
+  },
+  {
+    "id": 1783160490984,
+    "repo_owner": "testuser",
+    "repo_name": "testrepo",
+    "pr_number": 1,
+    "pr_title": "Add login feature",
+    "author": "testuser",
+    "additions": 23,
+    "deletions": 0,
+    "changed_files_count": 1,
+    "html_url": "https://github.com/testuser/testrepo/pull/1",
+    "summary": "Contains a SQL injection vulnerability.",
+    "overall_score": 4.5,
+    "risk_level": "HIGH",
+    "issues": [
+      {
+        "file_path": "auth.py",
+        "line_number": 6,
+        "severity": "HIGH",
+        "category": "SECURITY",
+        "description": "SQL injection via string concatenation.",
+        "suggestion": "Use parameterized queries."
+      }
+    ],
+    "strengths": [
+      "Readable function names."
+    ],
+    "model_used": "openai/gpt-oss-120b",
+    "created_at": "2026-07-04T10:21:30.984595+00:00"
+  },
+  {
+    "id": 1783160490994,
+    "repo_owner": "testuser",
+    "repo_name": "testrepo",
+    "pr_number": 1,
+    "pr_title": "Add login feature",
+    "author": "testuser",
+    "additions": 23,
+    "deletions": 0,
+    "changed_files_count": 1,
+    "html_url": "https://github.com/testuser/testrepo/pull/1",
+    "summary": "Contains a SQL injection vulnerability.",
+    "overall_score": 4.5,
+    "risk_level": "HIGH",
+    "issues": [
+      {
+        "file_path": "auth.py",
+        "line_number": 6,
+        "severity": "HIGH",
+        "category": "SECURITY",
+        "description": "SQL injection via string concatenation.",
+        "suggestion": "Use parameterized queries."
+      }
+    ],
+    "strengths": [
+      "Readable function names."
+    ],
+    "model_used": "openai/gpt-oss-120b",
+    "created_at": "2026-07-04T10:21:30.994877+00:00"
+  },
+  {
+    "id": 1783160548537,
+    "repo_owner": "tester",
+    "repo_name": "repo",
+    "pr_number": 1,
+    "pr_title": "Seed PR",
+    "author": "tester",
+    "additions": 5,
+    "deletions": 1,
+    "changed_files_count": 1,
+    "html_url": "https://github.com/tester/repo/pull/1",
+    "summary": "Looks fine.",
+    "overall_score": 8.0,
+    "risk_level": "LOW",
+    "issues": [],
+    "strengths": [
+      "Simple change"
+    ],
+    "model_used": "openai/gpt-oss-120b",
+    "created_at": "2026-07-04T10:22:28.538097+00:00"
+  },
+  {
+    "id": 1783160548577,
+    "repo_owner": "tester",
+    "repo_name": "repo",
+    "pr_number": 1,
+    "pr_title": "Seed PR",
+    "author": "tester",
+    "additions": 5,
+    "deletions": 1,
+    "changed_files_count": 1,
+    "html_url": "https://github.com/tester/repo/pull/1",
+    "summary": "Looks fine.",
+    "overall_score": 8.0,
+    "risk_level": "LOW",
+    "issues": [],
+    "strengths": [
+      "Simple change"
+    ],
+    "model_used": "openai/gpt-oss-120b",
+    "created_at": "2026-07-04T10:22:28.577140+00:00"
+  },
+  {
+    "id": 1783160548791,
+    "repo_owner": "octocat",
+    "repo_name": "demo",
+    "pr_number": 7,
+    "pr_title": "Fix pagination bug",
+    "author": "octocat",
+    "additions": 10,
+    "deletions": 2,
+    "changed_files_count": 1,
+    "html_url": "https://github.com/octocat/demo/pull/7",
+    "summary": "Clean, well-structured fix.",
+    "overall_score": 9.0,
+    "risk_level": "LOW",
+    "issues": [],
+    "strengths": [
+      "Good test coverage",
+      "Clear commit message"
+    ],
+    "model_used": "openai/gpt-oss-120b",
+    "created_at": "2026-07-04T10:22:28.791168+00:00"
+  },
+  {
+    "id": 1783160549094,
+    "repo_owner": "testuser",
+    "repo_name": "testrepo",
+    "pr_number": 1,
+    "pr_title": "Add login feature",
+    "author": "testuser",
+    "additions": 23,
+    "deletions": 0,
+    "changed_files_count": 1,
+    "html_url": "https://github.com/testuser/testrepo/pull/1",
+    "summary": "Contains a SQL injection vulnerability.",
+    "overall_score": 4.5,
+    "risk_level": "HIGH",
+    "issues": [
+      {
+        "file_path": "auth.py",
+        "line_number": 6,
+        "severity": "HIGH",
+        "category": "SECURITY",
+        "description": "SQL injection via string concatenation.",
+        "suggestion": "Use parameterized queries."
+      }
+    ],
+    "strengths": [
+      "Readable function names."
+    ],
+    "model_used": "openai/gpt-oss-120b",
+    "created_at": "2026-07-04T10:22:29.094453+00:00"
+  },
+  {
+    "id": 1783160549101,
+    "repo_owner": "testuser",
+    "repo_name": "testrepo",
+    "pr_number": 1,
+    "pr_title": "Add login feature",
+    "author": "testuser",
+    "additions": 23,
+    "deletions": 0,
+    "changed_files_count": 1,
+    "html_url": "https://github.com/testuser/testrepo/pull/1",
+    "summary": "Contains a SQL injection vulnerability.",
+    "overall_score": 4.5,
+    "risk_level": "HIGH",
+    "issues": [
+      {
+        "file_path": "auth.py",
+        "line_number": 6,
+        "severity": "HIGH",
+        "category": "SECURITY",
+        "description": "SQL injection via string concatenation.",
+        "suggestion": "Use parameterized queries."
+      }
+    ],
+    "strengths": [
+      "Readable function names."
+    ],
+    "model_used": "openai/gpt-oss-120b",
+    "created_at": "2026-07-04T10:22:29.102141+00:00"
+  }
+]
