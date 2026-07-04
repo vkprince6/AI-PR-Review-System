@@ -1,0 +1,79 @@
+2026-07-04 07:31:55 | INFO     | app.core.logger:configure_logging:60 - Logging configured | env=development | level=INFO
+2026-07-04 07:31:55 | INFO     | app.main:lifespan:36 - Starting CodeSentinel AI in development mode
+2026-07-04 07:31:55 | INFO     | app.main:lifespan:38 - Database initialized.
+2026-07-04 07:31:55 | INFO     | app.core.middleware:dispatch:51 - Request started | id=41c9ce42-86b7-4384-922f-1aba154521ee | method=GET | path=/api/v1/history/pull-requests
+2026-07-04 07:31:55 | INFO     | app.core.middleware:dispatch:74 - Request completed | id=41c9ce42-86b7-4384-922f-1aba154521ee | method=GET | path=/api/v1/history/pull-requests | status=200 | duration_ms=25.99
+2026-07-04 07:31:55 | INFO     | app.main:lifespan:40 - Shutting down CodeSentinel AI
+2026-07-04 07:31:55 | INFO     | app.core.logger:configure_logging:60 - Logging configured | env=development | level=INFO
+2026-07-04 07:31:55 | INFO     | app.main:lifespan:36 - Starting CodeSentinel AI in development mode
+2026-07-04 07:31:55 | INFO     | app.main:lifespan:38 - Database initialized.
+2026-07-04 07:31:55 | INFO     | app.core.middleware:dispatch:51 - Request started | id=24e8fd9b-e04e-43a0-be1e-20f11b241d63 | method=POST | path=/api/v1/review/analyze
+2026-07-04 07:31:55 | INFO     | app.services.review_service:review_pull_request:71 - Starting review | repo=tester/repo | pr=1
+2026-07-04 07:31:55 | INFO     | app.services.review_service:review_pull_request:127 - Review completed | repo=tester/repo | pr=1 | score=8.0 | risk=LOW
+2026-07-04 07:31:55 | INFO     | app.core.middleware:dispatch:74 - Request completed | id=24e8fd9b-e04e-43a0-be1e-20f11b241d63 | method=POST | path=/api/v1/review/analyze | status=200 | duration_ms=22.14
+2026-07-04 07:31:55 | INFO     | app.core.middleware:dispatch:51 - Request started | id=cee97902-de80-4e06-b849-5219a67b8cb0 | method=GET | path=/api/v1/history/pull-requests
+2026-07-04 07:31:55 | INFO     | app.core.middleware:dispatch:74 - Request completed | id=cee97902-de80-4e06-b849-5219a67b8cb0 | method=GET | path=/api/v1/history/pull-requests | status=200 | duration_ms=10.27
+2026-07-04 07:31:55 | INFO     | app.main:lifespan:40 - Shutting down CodeSentinel AI
+2026-07-04 07:31:55 | INFO     | app.core.logger:configure_logging:60 - Logging configured | env=development | level=INFO
+2026-07-04 07:31:55 | INFO     | app.main:lifespan:36 - Starting CodeSentinel AI in development mode
+2026-07-04 07:31:55 | INFO     | app.main:lifespan:38 - Database initialized.
+2026-07-04 07:31:55 | INFO     | app.core.middleware:dispatch:51 - Request started | id=98ad2e56-6431-4360-94ad-d7c047f08a37 | method=POST | path=/api/v1/review/analyze
+2026-07-04 07:31:55 | INFO     | app.services.review_service:review_pull_request:71 - Starting review | repo=tester/repo | pr=1
+2026-07-04 07:31:55 | INFO     | app.services.review_service:review_pull_request:127 - Review completed | repo=tester/repo | pr=1 | score=8.0 | risk=LOW
+2026-07-04 07:31:55 | INFO     | app.core.middleware:dispatch:74 - Request completed | id=98ad2e56-6431-4360-94ad-d7c047f08a37 | method=POST | path=/api/v1/review/analyze | status=200 | duration_ms=10.25
+2026-07-04 07:31:55 | INFO     | app.core.middleware:dispatch:51 - Request started | id=efd2e850-da75-413f-ba17-be90faca7d11 | method=GET | path=/api/v1/history/pull-requests
+2026-07-04 07:31:55 | INFO     | app.core.middleware:dispatch:74 - Request completed | id=efd2e850-da75-413f-ba17-be90faca7d11 | method=GET | path=/api/v1/history/pull-requests | status=200 | duration_ms=6.86
+2026-07-04 07:31:55 | INFO     | app.core.middleware:dispatch:51 - Request started | id=897b419e-138b-478a-9698-b969772deb41 | method=DELETE | path=/api/v1/history/pull-requests/1
+2026-07-04 07:31:55 | INFO     | app.core.middleware:dispatch:74 - Request completed | id=897b419e-138b-478a-9698-b969772deb41 | method=DELETE | path=/api/v1/history/pull-requests/1 | status=204 | duration_ms=14.67
+2026-07-04 07:31:55 | INFO     | app.core.middleware:dispatch:51 - Request started | id=23778108-bb39-4d6c-9bf1-a44d2c0f7f69 | method=GET | path=/api/v1/history/pull-requests
+2026-07-04 07:31:55 | INFO     | app.core.middleware:dispatch:74 - Request completed | id=23778108-bb39-4d6c-9bf1-a44d2c0f7f69 | method=GET | path=/api/v1/history/pull-requests | status=200 | duration_ms=7.88
+2026-07-04 07:31:55 | INFO     | app.main:lifespan:40 - Shutting down CodeSentinel AI
+2026-07-04 07:31:55 | INFO     | app.core.logger:configure_logging:60 - Logging configured | env=development | level=INFO
+2026-07-04 07:31:55 | INFO     | app.main:lifespan:36 - Starting CodeSentinel AI in development mode
+2026-07-04 07:31:55 | INFO     | app.main:lifespan:38 - Database initialized.
+2026-07-04 07:31:55 | INFO     | app.core.middleware:dispatch:51 - Request started | id=e8f5cd36-4f6c-4d49-8587-551367702c45 | method=DELETE | path=/api/v1/history/pull-requests/999
+2026-07-04 07:31:55 | ERROR    | app.main:codesentinel_exception_handler:89 - Handled exception | path=/api/v1/history/pull-requests/999 | message=Pull request with id 999 not found. | details={'pull_request_id': 999}
+2026-07-04 07:31:55 | INFO     | app.core.middleware:dispatch:74 - Request completed | id=e8f5cd36-4f6c-4d49-8587-551367702c45 | method=DELETE | path=/api/v1/history/pull-requests/999 | status=404 | duration_ms=4.23
+2026-07-04 07:31:55 | INFO     | app.main:lifespan:40 - Shutting down CodeSentinel AI
+2026-07-04 07:31:55 | INFO     | app.core.logger:configure_logging:60 - Logging configured | env=development | level=INFO
+2026-07-04 07:31:55 | INFO     | app.main:lifespan:36 - Starting CodeSentinel AI in development mode
+2026-07-04 07:31:55 | INFO     | app.main:lifespan:38 - Database initialized.
+2026-07-04 07:31:55 | INFO     | app.core.middleware:dispatch:51 - Request started | id=9edfd926-86de-40bd-9008-1319b2224c45 | method=POST | path=/api/v1/review/analyze
+2026-07-04 07:31:55 | INFO     | app.services.review_service:review_pull_request:71 - Starting review | repo=octocat/demo | pr=7
+2026-07-04 07:31:55 | INFO     | app.services.review_service:review_pull_request:127 - Review completed | repo=octocat/demo | pr=7 | score=9.0 | risk=LOW
+2026-07-04 07:31:55 | INFO     | app.core.middleware:dispatch:74 - Request completed | id=9edfd926-86de-40bd-9008-1319b2224c45 | method=POST | path=/api/v1/review/analyze | status=200 | duration_ms=13.34
+2026-07-04 07:31:55 | INFO     | app.main:lifespan:40 - Shutting down CodeSentinel AI
+2026-07-04 07:31:55 | INFO     | app.core.logger:configure_logging:60 - Logging configured | env=development | level=INFO
+2026-07-04 07:31:55 | INFO     | app.main:lifespan:36 - Starting CodeSentinel AI in development mode
+2026-07-04 07:31:55 | INFO     | app.main:lifespan:38 - Database initialized.
+2026-07-04 07:31:55 | INFO     | app.core.middleware:dispatch:51 - Request started | id=2acb9cf9-e094-4c08-bdc5-91e0ac52e46b | method=POST | path=/api/v1/review/analyze
+2026-07-04 07:31:55 | INFO     | app.core.middleware:dispatch:74 - Request completed | id=2acb9cf9-e094-4c08-bdc5-91e0ac52e46b | method=POST | path=/api/v1/review/analyze | status=422 | duration_ms=213.91
+2026-07-04 07:31:55 | INFO     | app.main:lifespan:40 - Shutting down CodeSentinel AI
+2026-07-04 07:31:56 | INFO     | app.core.logger:configure_logging:60 - Logging configured | env=development | level=INFO
+2026-07-04 07:31:56 | INFO     | app.main:lifespan:36 - Starting CodeSentinel AI in development mode
+2026-07-04 07:31:56 | INFO     | app.main:lifespan:38 - Database initialized.
+2026-07-04 07:31:56 | INFO     | app.core.middleware:dispatch:51 - Request started | id=b1a08c99-fabf-4712-8702-8170defc4a64 | method=GET | path=/api/v1/review/999
+2026-07-04 07:31:56 | ERROR    | app.main:codesentinel_exception_handler:89 - Handled exception | path=/api/v1/review/999 | message=Review with id 999 not found. | details={'review_id': 999}
+2026-07-04 07:31:56 | INFO     | app.core.middleware:dispatch:74 - Request completed | id=b1a08c99-fabf-4712-8702-8170defc4a64 | method=GET | path=/api/v1/review/999 | status=404 | duration_ms=5.86
+2026-07-04 07:31:56 | INFO     | app.main:lifespan:40 - Shutting down CodeSentinel AI
+2026-07-04 07:31:56 | INFO     | app.services.github_service:validate_repository:102 - Validated GitHub repository | repo=facebook/react
+2026-07-04 07:31:56 | INFO     | app.services.groq_service:generate_structured_review:69 - Groq review generated | model=llama-3.3-70b-versatile | risk_level=LOW
+2026-07-04 07:31:56 | ERROR    | app.services.groq_service:generate_structured_review:63 - Groq returned non-JSON output | raw=this is not valid json
+2026-07-04 07:31:56 | INFO     | app.core.logger:configure_logging:60 - Logging configured | env=development | level=INFO
+2026-07-04 07:31:56 | INFO     | app.main:lifespan:36 - Starting CodeSentinel AI in development mode
+2026-07-04 07:31:56 | INFO     | app.main:lifespan:38 - Database initialized.
+2026-07-04 07:31:56 | INFO     | app.core.middleware:dispatch:51 - Request started | id=b747c899-c3ff-47b6-b380-2ebf2f40753b | method=GET | path=/health
+2026-07-04 07:31:56 | INFO     | app.core.middleware:dispatch:74 - Request completed | id=b747c899-c3ff-47b6-b380-2ebf2f40753b | method=GET | path=/health | status=200 | duration_ms=1.12
+2026-07-04 07:31:56 | INFO     | app.main:lifespan:40 - Shutting down CodeSentinel AI
+2026-07-04 07:31:56 | INFO     | app.services.review_service:review_pull_request:71 - Starting review | repo=testuser/testrepo | pr=1
+2026-07-04 07:31:56 | INFO     | app.services.review_service:review_pull_request:127 - Review completed | repo=testuser/testrepo | pr=1 | score=4.5 | risk=HIGH
+2026-07-04 07:31:56 | INFO     | app.services.review_service:review_pull_request:71 - Starting review | repo=testuser/testrepo | pr=1
+2026-07-04 07:31:56 | INFO     | app.services.review_service:review_pull_request:127 - Review completed | repo=testuser/testrepo | pr=1 | score=4.5 | risk=HIGH
+2026-07-04 07:31:56 | INFO     | app.services.review_service:review_pull_request:71 - Starting review | repo=testuser/testrepo | pr=1
+2026-07-04 07:31:56 | ERROR    | app.services.review_service:review_pull_request:94 - AI output failed schema validation | errors=2 validation errors for ReviewResultSchema
+overall_score
+  Field required [type=missing, input_value={'summary': 'incomplete output'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.10/v/missing
+risk_level
+  Field required [type=missing, input_value={'summary': 'incomplete output'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.10/v/missing

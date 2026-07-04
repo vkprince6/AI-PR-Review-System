@@ -1,0 +1,52 @@
+services:
+  backend:
+    build:
+      context: ./codesentinel-ai/backend
+      dockerfile: Dockerfile
+
+    container_name: codesentinel-backend
+
+    ports:
+      - "8000:8000"
+
+    env_file:
+      - ./codesentinel-ai/backend/.env
+
+    volumes:
+      - backend_logs:/app/logs
+
+    restart: unless-stopped
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./codesentinel-ai/frontend
+      dockerfile: Dockerfile
+
+    container_name: codesentinel-frontend
+
+    ports:
+      - "3000:3000"
+
+    environment:
+      - NEXT_PUBLIC_API_BASE_URL=http://localhost:8000/api/v1
+
+    depends_on:
+      backend:
+        condition: service_healthy
+
+    restart: unless-stopped
+
+volumes:
+  backend_logs:
